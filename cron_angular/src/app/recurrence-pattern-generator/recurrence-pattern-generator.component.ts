@@ -10,10 +10,8 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./recurrence-pattern-generator.component.css']
 })
 export class RecurrencePatternGeneratorComponent {
-  // Add this line to expose Object to the template
-  Object = Object;
-  
   weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  monthDays = Array.from({length: 31}, (_, i) => i + 1);
 
   pattern: string = 'daily';
   time: string = '12:00';
@@ -23,73 +21,123 @@ export class RecurrencePatternGeneratorComponent {
     thursday: false, friday: false, saturday: false, sunday: false
   };
   description: string = '';
+  generatedCron: string = '';
 
   ngOnInit() {
     this.generateDescription();
   }
 
-/*
+  onPatternChange(value: string) {
+    this.pattern = value;
+    this.generateDescription();
+  }
 
-Create Recurrence Pattern Description Module that has the following functionalities
-Complete the following functionalities.
+  onTimeChange(value: string) {
+    this.time = value;
+    this.generateDescription();
+  }
 
-1 .Renders recurrence pattern select field
+  toggleDay(day: string) {
+    this.selectedDays[day] = !this.selectedDays[day];
+    this.generateDescription();
+  }
 
-2 .Shows daily pattern description with the selected time
+  onDateChange(value: string) {
+    this.date = value;
+    this.generateDescription();
+  }
 
-Example:
-Input:
-Pattern: Daily
-Time: 10:30 AM
-Output: Runs every day at 10:30.
+  generateDescription() {
+    if (!this.time) {
+      this.description = 'Please select a time';
+      this.generatedCron = '';
+      return;
+    }
+    
+    const [hours, minutes] = this.time.split(':');
+    const hour = parseInt(hours);
+    const minute = minutes;
+    
+    switch (this.pattern) {
+      case 'daily':
+        this.description = `Runs every day at ${hours}:${minute}.`;
+        this.generatedCron = `0 ${minute} ${hours} * * *`;
+        break;
+        
+      case 'weekly':
+        const selectedDaysList = this.weekdays.filter(day => this.selectedDays[day]);
+        
+        if (selectedDaysList.length === 0) {
+          this.description = `Runs every week at ${hours}:${minute}.`;
+          this.generatedCron = `0 ${minute} ${hours} * * *`;
+        } else {
+          const daysText = selectedDaysList
+            .map(day => this.capitalize(day))
+            .join(', ');
+          
+          const dayNumbers = selectedDaysList
+            .map(day => this.weekdays.indexOf(day))
+            .join(',');
+          
+          this.description = `Runs every week on ${daysText} at ${hours}:${minute}.`;
+          this.generatedCron = `0 ${minute} ${hours} * * ${dayNumbers}`;
+        }
+        break;
+        
+      case 'monthly':
+        const dayWithSuffix = this.ordinalSuffix(this.date);
+        this.description = `Runs every month on the ${dayWithSuffix} day at ${hours}:${minute}.`;
+        this.generatedCron = `0 ${minute} ${hours} ${this.date} * *`;
+        break;
+        
+      default:
+        this.description = '';
+        this.generatedCron = '';
+    }
+  }
 
-3. Displays weekly pattern description with selected days and time
+  capitalize(day: string): string {
+    return day.charAt(0).toUpperCase() + day.slice(1);
+  }
 
-Example:
-Input:
-Pattern: Weekly
-Days Selected: Monday, Friday
-Time: 08:30 AM
-Output: Runs every week on Monday, Friday at 08:30.
+  ordinalSuffix(day: string): string {
+    const num = parseInt(day);
+    
+    if (num >= 11 && num <= 13) {
+      return num + 'th';
+    }
+    
+    switch (num % 10) {
+      case 1:
+        return num + 'st';
+      case 2:
+        return num + 'nd';
+      case 3:
+        return num + 'rd';
+      default:
+        return num + 'th';
+    }
+  }
 
-4. Falls back to a generic weekly description when no days are selected
+  getDaysKeys() {
+    return Object.keys(this.selectedDays);
+  }
 
-Example:
-Input:
-Pattern: Weekly
-Days Selected: 'None'
-Time: 06:30 PM
-Output: Runs every week at 18:30.
+  copyDescription() {
+    this.copyToClipboard(this.description);
+  }
 
-5. Shows monthly pattern description with selected date and time
+  copyCron() {
+    this.copyToClipboard(this.generatedCron);
+  }
 
-Example:
-Input:
-Pattern: Monthly
-Date Selected: 15
-Time: 09:00 AM
-Output: Runs every month on the 15th day at 09:00.
-
-6. Handles ordinal suffixes correctly (e.g., 1st, 2nd, 3rd, 11th, etc.)
-
-NOTE: You are free to implement the task in any other way as well but shouldn't be hardcoded.
-
-*/
-
-  onPatternChange(value: string) {}
-
-  onTimeChange(value: string) {}
-
-  toggleDay(day: string) { }
-
-  onDateChange(value: string) {}
-
-  generateDescription() {}
-
-  capitalize(day: string): string {return 'x'}
-
-  ordinalSuffix(day: string): string {return 'x'}
-
-  getDaysKeys() {}
-
+  private copyToClipboard(text: string) {
+    if (!text) return;
+    
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Copied to clipboard!');
+    }).catch(err => {
+      console.error('Failed to copy:', err);
+    });
+  }
 }

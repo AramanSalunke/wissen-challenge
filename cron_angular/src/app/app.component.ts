@@ -7,13 +7,14 @@ import { RecurrencePatternGeneratorComponent } from './recurrence-pattern-genera
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, CronExpressionEvaluatorComponent, RecurrencePatternGeneratorComponent],
+  styleUrl: './app.component.css',
   template: `
-    <div className="App">
-    <header className="App-header">
+    <div class="App">
+    <header class="App-header">
       <h1>Cron Expression Visualizer</h1>
     </header>
     <main>
-      <div className="container">
+      <div class="container">
         <h2>Part 1: Cron Expression Evaluator</h2>
         <app-cron-expression-evaluator></app-cron-expression-evaluator>
         

@@ -1,15 +1,89 @@
 <div class="cron-evaluator">
+  <div class="form-group">
     <label for="cronInput">Cron Expression</label>
-    <input id="cronInput" type="text" [(ngModel)]="cronExpression" (ngModelChange)="onCronChange($event)" placeholder="e.g., 0 */5 * * * *" />
-  
-    <div class="parsed-fields">
-      <h4>Parsed Fields</h4>
-      <div className="cron-field"><strong>Seconds:</strong> {{ cronFields.seconds }} <span *ngIf="activeFields.seconds">(active)</span></div>
-      <div className="cron-field"><strong>Minutes:</strong> {{ cronFields.minutes }} <span *ngIf="activeFields.minutes">(active)</span></div>
-      <div className="cron-field"><strong>Hours:</strong> {{ cronFields.hours }} <span *ngIf="activeFields.hours">(active)</span></div>
-      <div className="cron-field"><strong>Days:</strong> {{ cronFields.days }} <span *ngIf="activeFields.days">(active)</span></div>
-      <div className="cron-field"><strong>Month:</strong> {{ cronFields.month }} <span *ngIf="activeFields.month">(active)</span></div>
-      <div className="cron-field"><strong>Day of Week:</strong> {{ cronFields.dayOfWeek }} <span *ngIf="activeFields.dayOfWeek">(active)</span></div>
+    <div class="input-with-button">
+      <input 
+        id="cronInput" 
+        type="text" 
+        [(ngModel)]="cronExpression" 
+        (ngModelChange)="onCronChange($event)" 
+        placeholder="e.g., 0 */5 * * * *" 
+        class="cron-field input"
+      />
+      <button class="copy-btn" (click)="copyToClipboard(cronExpression)" title="Copy expression">
+        📋
+      </button>
     </div>
   </div>
-  
+
+  <div class="presets-section">
+    <label>Quick Presets:</label>
+    <div class="preset-buttons">
+      <button class="preset-btn" (click)="applyPreset('0 0 * * * *')">Every Hour</button>
+      <button class="preset-btn" (click)="applyPreset('0 0 0 * * *')">Daily at Midnight</button>
+      <button class="preset-btn" (click)="applyPreset('0 0 9 * * 1-5')">Weekdays at 9 AM</button>
+      <button class="preset-btn" (click)="applyPreset('0 */15 * * * *')">Every 15 Minutes</button>
+      <button class="preset-btn" (click)="applyPreset('0 0 0 1 * *')">First Day of Month</button>
+    </div>
+  </div>
+
+  @if (validationError) {
+    <div class="validation-message">
+      <span class="error-icon">⚠️</span>
+      {{ validationError }}
+    </div>
+  }
+
+  <div class="description">
+    <h4>Parsed Fields</h4>
+    <div class="parsed-fields">
+      <div class="field-row">
+        <strong>Seconds:</strong> {{ cronFields.seconds }} 
+        @if (activeFields.seconds) {
+          <span class="field-indicator">(active)</span>
+        }
+      </div>
+      <div class="field-row">
+        <strong>Minutes:</strong> {{ cronFields.minutes }} 
+        @if (activeFields.minutes) {
+          <span class="field-indicator">(active)</span>
+        }
+      </div>
+      <div class="field-row">
+        <strong>Hours:</strong> {{ cronFields.hours }} 
+        @if (activeFields.hours) {
+          <span class="field-indicator">(active)</span>
+        }
+      </div>
+      <div class="field-row">
+        <strong>Days:</strong> {{ cronFields.days }} 
+        @if (activeFields.days) {
+          <span class="field-indicator">(active)</span>
+        }
+      </div>
+      <div class="field-row">
+        <strong>Month:</strong> {{ cronFields.month }} 
+        @if (activeFields.month) {
+          <span class="field-indicator">(active)</span>
+        }
+      </div>
+      <div class="field-row">
+        <strong>Day of Week:</strong> {{ cronFields.dayOfWeek }} 
+        @if (activeFields.dayOfWeek) {
+          <span class="field-indicator">(active)</span>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if (nextExecutions.length > 0) {
+    <div class="next-executions">
+      <h4>Next 5 Execution Times:</h4>
+      <ul class="execution-list">
+        @for (execution of nextExecutions; track execution) {
+          <li>{{ execution }}</li>
+        }
+      </ul>
+    </div>
+  }
+</div>

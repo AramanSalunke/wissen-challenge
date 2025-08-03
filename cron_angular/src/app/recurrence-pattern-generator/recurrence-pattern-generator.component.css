@@ -1,83 +1,89 @@
-.App {
-    text-align: center;
-    font-family: Arial, sans-serif;
-  }
-  
-  .App-header {
-    background-color: #282c34;
-    padding: 20px;
-    color: white;
-  }
-  
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .cron-inputs {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .cron-field {
-    width: 30%;
-    margin-bottom: 15px;
-  }
-  
-  .cron-field input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .cron-field label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .field-indicator {
-    margin-top: 5px;
-    font-size: 12px;
-    color: green;
-    height: 15px;
-  }
-  
-  .recurrence-form {
+.recurrence-form {
     text-align: left;
     border: 1px solid #ddd;
     padding: 20px;
     border-radius: 5px;
     margin-top: 20px;
+    background-color: #fff;
   }
   
   .form-group {
     margin-bottom: 15px;
+    position: relative;
   }
   
   .form-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    color: #333;
   }
   
-  .form-group select {
+  .form-group select,
+  .time-input,
+  .date-input {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  .time-input {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: none;
+    background-color: white;
+  }
+
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+  }
+
+  .time-input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cpolyline points='12 6 12 12 16 14'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 20px 20px;
+    padding-right: 35px;
   }
   
   .description {
     margin-top: 20px;
-    padding: 10px;
+    padding: 15px;
     background-color: #f5f5f5;
     border-radius: 4px;
     text-align: left;
+  }
+  
+  .description-header,
+  .cron-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .description h4,
+  .generated-cron h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .description p {
+    margin: 0;
+    font-size: 16px;
+    color: #555;
   }
   
   .days-selection {
@@ -96,16 +102,40 @@
     margin-right: 5px;
   }
   
-  .time-input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
+  .day-checkbox label {
+    font-weight: normal;
+    margin-bottom: 0;
+  }
+
+  .generated-cron {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e8f5e9;
     border-radius: 4px;
   }
-  
-  .date-input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
+
+  .generated-cron code {
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #c8e6c9;
     border-radius: 4px;
+    font-family: monospace;
+    font-size: 14px;
+  }
+
+  .copy-btn.small {
+    padding: 5px 10px;
+    font-size: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .copy-btn.small:hover {
+    background-color: #45a049;
   }

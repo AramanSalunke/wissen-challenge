@@ -1,6 +1,28 @@
 # CronAngular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.7.
+Web-based tool for crafting and analyzing cron scheduling expressions using Angular framework.
+
+Angular CLI version: 19.2.7
+
+## Application Features
+
+### 1. Export Functionality
+- Enables direct clipboard transfer of scheduling expressions and their interpretations
+- Facilitates quick duplication through single-action copying
+
+### 2. Quick-Start Templates
+- Provides 5 pre-built scheduling options: Hourly intervals, Nightly executions (00:00), Business days at 9:00 AM, 15-minute cycles, Monthly beginning
+- Reduces configuration time by offering standard scheduling patterns
+
+### 3. Smart Input Analysis
+- Validates individual time components with precision
+- Presents informative feedback for incorrect syntax
+- Recognizes various input methods: numeric spans (1-5), recurring patterns (*/5), discrete values (1,3,5), and month/day abbreviations (JAN, MON)
+
+### 4. Execution Timeline Preview
+- Calculates and displays 5 forthcoming trigger points
+- Offers immediate schedule visualization
+- Refreshes predictions based on modified parameters
 
 ## Development server
 
